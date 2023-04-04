@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./src/:/go/src
+    tty: true
+
+  db:
+    build:
+      context: .
+      dockerfile: ./docker/db/Dockerfile
+    platform: "linux/amd64"
+    volumes:
+      - ./mysql/save_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: testpass
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: test
+      PMA_PASSWORD: testpass
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - db
