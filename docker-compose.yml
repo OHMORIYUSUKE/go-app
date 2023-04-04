@@ -18,11 +18,12 @@ services:
     platform: "linux/amd64"
     volumes:
       - ./mysql/save_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: test
-      MYSQL_USER: test
-      MYSQL_PASSWORD: testpass
+      MYSQL_ROOT_PASSWORD: root_pass
+      MYSQL_DATABASE: idolm@ster
+      MYSQL_USER: producer
+      MYSQL_PASSWORD: producer_pass
     ports:
       - 3306:3306
 
@@ -31,8 +32,8 @@ services:
     environment:
       PMA_ARBITRARY: 1
       PMA_HOST: db
-      PMA_USER: test
-      PMA_PASSWORD: testpass
+      PMA_USER: producer
+      PMA_PASSWORD: producer_pass
     restart: always
     ports:
       - 8080:80
